@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timer Options</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(-45deg, #0202B0, #121212, #0202B0, #121212);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
+      color: #fff;
+      text-align: center;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    h1 {
+      color: #F3B83B;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+    }
+
+    .timer-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      background-color: #ffffff10;
+      padding: 20px;
+      border-radius: 16px;
+      max-width: 400px;
+      margin: 0 auto 40px;
+    }
+
+    .timer-buttons button, .back-button {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #F3B83B;
+      border: none;
+      border-radius: 10px;
+      color: #000;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .timer-buttons button:hover, .back-button:hover {
+      background-color: #e0a800;
+    }
+
+    #timer-view {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: #ffffff10;
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    #countdown {
+      font-size: 6em;
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    .back-container {
+      margin-top: 30px;
+    }
+
+    footer {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .footer-created {
+      color: #F3B83B;
+    }
+    .footer-name {
+      color: white;
+    }
+    .footer-divider {
+      height: 30px;
+      width: 1px;
+      background-color: white;
+    }
+    .logo {
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Select a Timer Duration ⏱️</h1>
+  <div class="timer-buttons" id="button-view">
+    <button onclick="startTimer(1)">1 Minute</button>
+    <button onclick="startTimer(5)">5 Minutes</button>
+    <button onclick="startTimer(7)">7 Minutes</button>
+    <button onclick="startTimer(10)">10 Minutes</button>
+    <button onclick="startTimer(15)">15 Minutes</button>
+  </div>
+
+  <div id="timer-view">
+    <div id="countdown">00:00</div>
+  </div>
+
+  <div class="back-container" id="back-button-container" style="display: none;">
+  <button class="back-button" onclick="backToOptions()">⬅ Back to Time Options</button>
+</div>
+
+  <footer>
+    <span class="footer-created">Created by</span>
+    <span class="footer-name">Khadija Basahel</span>
+    <div class="footer-divider"></div>
+    <img src="Logo colors-01.png" alt="Beyond Logo" class="logo">
+  </footer>
+
+  <script>
+    let timerInterval;
+
+    function startTimer(minutes) {
+  document.getElementById('back-button-container').style.display = 'block';
+      clearInterval(timerInterval);
+      let seconds = minutes * 60;
+      updateDisplay(seconds);
+
+      document.getElementById('button-view').style.display = 'none';
+      document.getElementById('timer-view').style.display = 'flex';
+
+      timerInterval = setInterval(() => {
+        seconds--;
+        if (seconds < 0) {
+          clearInterval(timerInterval);
+          const countdown = document.getElementById('countdown');
+          if (countdown) countdown.innerText = "Time's Up! ⏰";
+        } else {
+          updateDisplay(seconds);
+        }
+      }, 1000);
+    }
+
+    function updateDisplay(seconds) {
+      const countdownEl = document.getElementById('countdown');
+      if (!countdownEl) return;
+      const min = Math.floor(seconds / 60);
+      const sec = seconds % 60;
+      countdownEl.innerText = min.toString().padStart(2, '0') + ':' + sec.toString().padStart(2, '0');
+
+      if (seconds <= 10) {
+        countdownEl.style.color = '#FF4C4C';
+      } else {
+        countdownEl.style.color = 'white';
+      }
+    }
+
+    function backToOptions() {
+  document.getElementById('back-button-container').style.display = 'none';
+      clearInterval(timerInterval);
+      const countdown = document.getElementById('countdown');
+      if (countdown) countdown.innerText = '00:00';
+      document.getElementById('button-view').style.display = 'flex';
+      document.getElementById('timer-view').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
